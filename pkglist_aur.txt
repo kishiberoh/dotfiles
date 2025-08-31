@@ -1,0 +1,6 @@
+autofs
+rar
+spotify
+wlogout
+yay
+yay-debug
