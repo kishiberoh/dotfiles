@@ -1,14 +1,13 @@
 -- Cool options 
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.undofile = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.splitbelow = true 
 vim.opt.splitright = true 
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.smarttab = true
-vim.opt.shiftwidth = 0
+vim.opt.shiftwidth = 4
 vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.signcolumn = "yes"
@@ -23,11 +22,12 @@ vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir" 
 vim.opt.showmode = false
+vim.opt.scrolloff = 5
 
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
 
-vim.keymap.set('n', '<leader>o' , ':update<CR> :source<CR>')
+vim.keymap.set('n', '<leader>o' , ':Lazy reload<CR> :source<CR>')
 vim.keymap.set('n', '<leader>w' , ':write<CR>')
 vim.keymap.set('n', '<leader>q' , ':quit<CR>')
 vim.keymap.set('n', '<leader>t' , ':Tutor<CR>')
@@ -159,7 +159,7 @@ require("lazy").setup({
             require("lualine").setup()
         end,
     },
-
+    
     },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -169,7 +169,8 @@ require("lazy").setup({
 })
 
 vim.cmd("colorscheme catppuccin-latte")
--- Removes status line highlights
+
+-- Removes status line highlighting
 --vim.cmd(":hi statusline guibg=NONE")
 
 
