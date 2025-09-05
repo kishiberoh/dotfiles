@@ -27,10 +27,8 @@ vim.opt.scrolloff = 5
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
 
-vim.keymap.set("n", "<leader>o", ":Lazy reload<CR> :source<CR>")
 vim.keymap.set("n", "<leader>w", ":write<CR>")
 vim.keymap.set("n", "<leader>q", ":quit<CR>")
-vim.keymap.set("n", "<leader>t", ":Tutor<CR>")
 vim.keymap.set("n", "<leader>bb", ":bnext<CR>")
 vim.keymap.set("n", "<leader>mm", ":Mason<CR>")
 
@@ -73,7 +71,7 @@ require("lazy").setup({
 		{
 			"nvim-telescope/telescope.nvim",
 			tag = "0.1.8",
-			dependencies = { "nvim-lua/plenary.nvim" },
+			dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
 			module = "telescope",
 			config = function()
 				require("telescope").setup({
@@ -184,7 +182,7 @@ require("lazy").setup({
 							enabled = true,
 						},
 						char = {
-							enabled = false,
+							enabled = true,
 						},
 					},
 				})
@@ -398,34 +396,22 @@ require("lazy").setup({
 
 			-- use a release tag to download pre-built binaries
 			version = "1.*",
-			-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-			-- build = 'cargo build --release',
 
 			---@module 'blink.cmp'
 			---@type blink.cmp.Config
 			opts = {
-				-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
-				-- 'super-tab' for mappings similar to vscode (tab to accept)
-				-- 'enter' for enter to accept
-				-- 'none' for no mappings
-				--
 				-- All presets have the following mappings:
+				-- TODO : add to which-key.nvim
 				-- C-space: Open menu or open docs if already open
 				-- C-n/C-p or Up/Down: Select next/previous item
 				-- C-e: Hide menu
 				-- C-k: Toggle signature help (if signature.enabled = true)
-				--
-				-- See :h blink-cmp-config-keymap for defining your own keymap
-				keymap = { preset = "default" },
 
-				appearance = {
-					-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-					-- Adjusts spacing to ensure icons are aligned
-					nerd_font_variant = "mono",
-				},
+				keymap = { preset = "super-tab" },
 
 				-- (Default) Only show the documentation popup when manually triggered
-				completion = { documentation = { auto_show = false } },
+				-- how to manually trigger ?
+				completion = { documentation = { auto_show = true } },
 
 				-- Default list of enabled providers defined so that you can extend it
 				-- elsewhere in your config, without redefining it, due to `opts_extend`
@@ -433,11 +419,6 @@ require("lazy").setup({
 					default = { "lsp", "path", "snippets", "buffer" },
 				},
 
-				-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-				-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-				-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-				--
-				-- See the fuzzy documentation for more information
 				fuzzy = { implementation = "prefer_rust_with_warning" },
 			},
 			opts_extend = { "sources.default" },
@@ -453,12 +434,14 @@ require("lazy").setup({
 })
 
 vim.cmd("colorscheme catppuccin-latte")
-vim.lsp.config("luals", {
-	cmd = { "lua-language-server" },
-	filetypes = { "lua" },
-	root_markers = { ".luarc.json", ".luarc.jsonc" },
-})
-
-vim.lsp.enable("luals")
 -- Removes status line highlighting
 --vim.cmd(":hi statusline guibg=NONE")
+
+-- LSP native config
+-- vim.lsp.config("luals", {
+-- 	cmd = { "lua-language-server" },
+-- 	filetypes = { "lua" },
+-- 	root_markers = { ".luarc.json", ".luarc.jsonc" },
+-- })
+--
+-- vim.lsp.enable("luals")
