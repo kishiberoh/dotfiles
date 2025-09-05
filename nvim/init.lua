@@ -86,10 +86,12 @@ require("lazy").setup({
 					},
 				})
 				require("telescope").load_extension("fzf")
+				require("telescope").load_extension("projects")
 				local builtin = require("telescope.builtin")
 				vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
 				vim.keymap.set("n", "<leader>fr", builtin.live_grep, { desc = "Telescope live grep" })
 				vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
+				vim.keymap.set("n", "<leader>fp", ":Telescope projects<CR>", { desc = "Telescope projects" })
 				vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 				vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Telescope git files" })
 				vim.keymap.set(
@@ -109,7 +111,6 @@ require("lazy").setup({
 				require("nvim-treesitter.configs").setup({
 					ensure_installed = {
 						"c",
-						"vimdoc",
 						"lua",
 						"bash",
 						"diff",
@@ -122,8 +123,6 @@ require("lazy").setup({
 						"nix",
 						"scala",
 						"tmux",
-						"typst",
-						"vim",
 						"rust",
 					},
 					sync_install = false,
@@ -422,6 +421,27 @@ require("lazy").setup({
 				fuzzy = { implementation = "prefer_rust_with_warning" },
 			},
 			opts_extend = { "sources.default" },
+		},
+		{
+			"ahmedkhalf/project.nvim",
+			opts = {
+				detection_methods = { "lsp", "pattern" },
+				patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+				show_hidden = true,
+			},
+			event = "VeryLazy",
+			config = function(_, opts)
+				require("project_nvim").setup(opts)
+				local history = require("project_nvim.utils.history")
+				history.delete_project = function(project)
+					for k, v in pairs(history.recent_projects) do
+						if v == project.value then
+							history.recent_projects[k] = nil
+							return
+						end
+					end
+				end
+			end,
 		},
 		-- end of plugin thingy
 	},
