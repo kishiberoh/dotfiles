@@ -27,8 +27,10 @@ vim.opt.scrolloff = 5
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
 
-vim.keymap.set("n", "<leader>w", ":write<CR>")
-vim.keymap.set("n", "<leader>q", ":quit<CR>")
+vim.keymap.set("n", "<leader>ww", ":write<CR>")
+vim.keymap.set("n", "<leader>qw", ":write<CR> :quit<CR>")
+vim.keymap.set("n", "<leader>qq", ":quit<CR>")
+vim.keymap.set("n", "<leader>qa", ":qall<CR>")
 vim.keymap.set("n", "<leader>bb", ":bnext<CR>")
 vim.keymap.set("n", "<leader>mm", ":Mason<CR>")
 
@@ -407,7 +409,7 @@ require("lazy").setup({
 				-- C-e: Hide menu
 				-- C-k: Toggle signature help (if signature.enabled = true)
 
-				keymap = { preset = "super-tab" },
+				keymap = { preset = "enter" },
 
 				-- (Default) Only show the documentation popup when manually triggered
 				-- how to manually trigger ?

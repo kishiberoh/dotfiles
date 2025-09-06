@@ -390,13 +390,85 @@
   "menus.clock.weather.location": "1007 Lausanne",
   "menus.clock.weather.unit": "metric",
   "theme.matugen": false,
-  "wallpaper.image": "/home/mche3kek/.config/hypr/aesthetic.jpg",
+  "wallpaper.image": "/home/mche3kek/Downloads/wallhaven-8xkjdj_1920x1080.png",
   "theme.matugen_settings.mode": "light",
-  "theme.matugen_settings.scheme_type": "content",
-  "theme.matugen_settings.variation": "standard_1",
+  "theme.matugen_settings.scheme_type": "tonal-spot",
+  "theme.matugen_settings.variation": "monochrome_1",
   "theme.bar.buttons.volume.enableBorder": false,
   "theme.bar.menus.opacity": 100,
   "theme.bar.menus.monochrome": false,
   "theme.bar.transparent": false,
-  "theme.bar.opacity": 6
+  "theme.bar.opacity": 6,
+  "wallpaper.pywal": false,
+  "bar.layouts": {
+    "0": {
+      "left": [
+        "workspaces",
+        "windowtitle",
+        "media"
+      ],
+      "middle": [
+        "clock"
+      ],
+      "right": [
+        "systray",
+        "volume",
+        "bluetooth",
+        "network",
+        "battery",
+        "notifications",
+        "dashboard"
+      ]
+    },
+    "1": {
+      "left": [
+        "workspaces",
+        "windowtitle",
+        "media"
+      ],
+      "middle": [
+        "clock"
+      ],
+      "right": [
+        "systray",
+        "volume",
+        "bluetooth",
+        "network",
+        "battery",
+        "notifications",
+        "dashboard"
+      ]
+    },
+    "2": {
+      "left": [
+        "workspaces",
+        "windowtitle",
+        "media"
+      ],
+      "middle": [
+        "clock"
+      ],
+      "right": [
+        "systray",
+        "volume",
+        "bluetooth",
+        "network",
+        "battery",
+        "notifications",
+        "dashboard"
+      ]
+    }
+  },
+  "menus.media.hideAuthor": false,
+  "menus.media.hideAlbum": false,
+  "menus.media.displayTime": true,
+  "menus.media.displayTimeTooltip": true,
+  "notifications.showActionsOnHover": true,
+  "theme.bar.menus.menu.dashboard.profile.size": "8.5em",
+  "menus.dashboard.stats.enable_gpu": false,
+  "menus.dashboard.stats.enabled": true,
+  "menus.dashboard.shortcuts.enabled": false,
+  "menus.dashboard.directories.enabled": false,
+  "menus.power.lowBatteryNotification": true,
+  "bar.customModules.weather.unit": "metric"
 }
