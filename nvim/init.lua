@@ -67,6 +67,7 @@ require("lazy").setup({
 				})
 			end,
 		},
+		-- replace telescope with snacks i think, will prove worthwhile
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		{
 			"nvim-telescope/telescope.nvim",
@@ -86,12 +87,10 @@ require("lazy").setup({
 					},
 				})
 				require("telescope").load_extension("fzf")
-				require("telescope").load_extension("projects")
 				local builtin = require("telescope.builtin")
 				vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
 				vim.keymap.set("n", "<leader>fr", builtin.live_grep, { desc = "Telescope live grep" })
 				vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-				vim.keymap.set("n", "<leader>fp", ":Telescope projects<CR>", { desc = "Telescope projects" })
 				vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 				vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Telescope git files" })
 				vim.keymap.set(
@@ -122,6 +121,7 @@ require("lazy").setup({
 						"python",
 						"nix",
 						"scala",
+						"latex",
 						"tmux",
 						"rust",
 					},
@@ -282,6 +282,7 @@ require("lazy").setup({
 						markdown = { "prettier" },
 						lua = { "stylua" },
 						python = { "isort", "black" },
+						latex = { "tex-fmt" },
 					},
 					format_on_save = {
 						lsp_fallback = true,
@@ -422,27 +423,6 @@ require("lazy").setup({
 			},
 			opts_extend = { "sources.default" },
 		},
-		{
-			"ahmedkhalf/project.nvim",
-			opts = {
-				detection_methods = { "lsp", "pattern" },
-				patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
-				show_hidden = true,
-			},
-			event = "VeryLazy",
-			config = function(_, opts)
-				require("project_nvim").setup(opts)
-				local history = require("project_nvim.utils.history")
-				history.delete_project = function(project)
-					for k, v in pairs(history.recent_projects) do
-						if v == project.value then
-							history.recent_projects[k] = nil
-							return
-						end
-					end
-				end
-			end,
-		},
 		-- end of plugin thingy
 	},
 
@@ -457,11 +437,15 @@ vim.cmd("colorscheme catppuccin-latte")
 -- Removes status line highlighting
 --vim.cmd(":hi statusline guibg=NONE")
 
+-- need to figure out the lsp stuff thingy so i can start using neovim as my main code editor
+
 -- LSP native config
 -- vim.lsp.config("luals", {
 -- 	cmd = { "lua-language-server" },
 -- 	filetypes = { "lua" },
 -- 	root_markers = { ".luarc.json", ".luarc.jsonc" },
 -- })
+--
+-- texlab as well
 --
 -- vim.lsp.enable("luals")
