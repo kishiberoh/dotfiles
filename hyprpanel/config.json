@@ -470,5 +470,6 @@
   "menus.dashboard.shortcuts.enabled": false,
   "menus.dashboard.directories.enabled": false,
   "menus.power.lowBatteryNotification": true,
-  "bar.customModules.weather.unit": "metric"
+  "bar.customModules.weather.unit": "metric",
+  "wallpaper.enable": false
 }
