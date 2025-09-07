@@ -27,12 +27,12 @@ vim.opt.scrolloff = 5
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
 
-vim.keymap.set("n", "<leader>ww", ":write<CR>")
-vim.keymap.set("n", "<leader>wq", ":write<CR> :quit<CR>")
-vim.keymap.set("n", "<leader>q", ":quit<CR>")
-vim.keymap.set("n", "<leader>qa", ":qall<CR>")
-vim.keymap.set("n", "<leader>bb", ":bnext<CR>")
-vim.keymap.set("n", "<leader>mm", ":Mason<CR>")
+vim.keymap.set("n", "<leader>ww", ":write<CR>", { desc = "Write" })
+vim.keymap.set("n", "<leader>wq", ":write<CR> :quit<CR>", { desc = "Write and quit" })
+vim.keymap.set("n", "<leader>qq", ":quit<CR>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>qa", ":qall<CR>", { desc = "Quit all" })
+vim.keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Write" })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -51,7 +51,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.keymap.set("n", "<leader>L", ":Lazy<CR>")
+vim.keymap.set("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy" })
 
 -- Local leader for lazy
 vim.g.maplocalleader = "\\"
@@ -68,6 +68,18 @@ require("lazy").setup({
 					auto_integrations = true,
 				})
 			end,
+		},
+		{
+			"rebelot/kanagawa.nvim",
+			lazy = false,
+			priority = 1000,
+			opts = {},
+		},
+		{
+			"wnkz/monoglow.nvim",
+			lazy = false,
+			priority = 1000,
+			opts = {},
 		},
 		-- -- replace telescope with snacks i think, will prove worthwhile
 		-- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -761,7 +773,7 @@ require("lazy").setup({
 					desc = "Undo History",
 				},
 				{
-					"<leader>uC",
+					"<leader>tt",
 					function()
 						Snacks.picker.colorschemes()
 					end,
