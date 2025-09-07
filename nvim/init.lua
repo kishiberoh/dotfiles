@@ -81,6 +81,14 @@ require("lazy").setup({
 			priority = 1000,
 			opts = {},
 		},
+		-- lua/plugins/rose-pine.lua
+		{
+			"rose-pine/neovim",
+			name = "rose-pine",
+			lazy = false,
+			priority = 1000,
+			opts = {},
+		},
 		-- -- replace telescope with snacks i think, will prove worthwhile
 		-- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		-- {
@@ -964,7 +972,7 @@ require("lazy").setup({
 
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.
-	install = { colorscheme = { "catppuccin-latte" } },
+	-- install = { colorscheme = { "catppuccin-latte" } },
 	-- automatically check for plugin updates
 	checker = { enabled = true },
 })
