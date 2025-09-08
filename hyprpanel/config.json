@@ -525,5 +525,7 @@
   "red1": "#d7827e",
   "teal": "#56949f",
   "terminal_black": "#cecacd",
-  "yellow": "#ea9d34"
+  "yellow": "#ea9d34",
+  "bar.volume.middleClick": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+  "bar.volume.rightClick": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 }
