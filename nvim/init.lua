@@ -977,7 +977,7 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme catppuccin-latte")
+vim.cmd("colorscheme rose-pine-dawn")
 -- Removes status line highlighting
 --vim.cmd(":hi statusline guibg=NONE")
 
