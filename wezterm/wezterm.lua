@@ -2,7 +2,11 @@ local wezterm = require("wezterm")
 
 return {
 	-- Font settings
-	font = wezterm.font("0xProto Nerd Font", { weight = "Bold" }),
+	font = wezterm.font_with_fallback({
+		{ family = "0xProto Nerd Font", weight = "Bold" },
+		{ family = "JetBrains Mono Nerd Font", weight = "Bold" },
+	}),
+
 	font_size = 12,
 
 	-- Disable line padding to prevent overflow/spacing issues
