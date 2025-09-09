@@ -398,6 +398,12 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"folke/todo-comments.nvim",
+			event = "VimEnter",
+			dependencies = { "nvim-lua/plenary.nvim" },
+			opts = {},
+		},
+		{
 			"saghen/blink.cmp",
 			opts_extend = {
 				"sources.completion.enabled_providers",
@@ -981,14 +987,24 @@ vim.cmd("colorscheme rose-pine-dawn")
 -- Removes status line highlighting
 --vim.cmd(":hi statusline guibg=NONE")
 
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.hl.on_yank()`
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+	callback = function()
+		vim.hl.on_yank()
+	end,
+})
 -- need to figure out the lsp stuff thingy so i can start using neovim as my main code editor
 
 -- LSP native config
-local lsp_configs = {}
-
-for _, f in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
-	local server_name = vim.fn.fnamemodify(f, ":t:r")
-	table.insert(lsp_configs, server_name)
-end
-
-vim.lsp.enable(lsp_configs)
+-- local lsp_configs = {}
+--
+-- for _, f in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
+-- 	local server_name = vim.fn.fnamemodify(f, ":t:r")
+-- 	table.insert(lsp_configs, server_name)
+-- end
+--
+-- vim.lsp.enable(lsp_configs)
