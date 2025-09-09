@@ -984,12 +984,11 @@ vim.cmd("colorscheme rose-pine-dawn")
 -- need to figure out the lsp stuff thingy so i can start using neovim as my main code editor
 
 -- LSP native config
--- vim.lsp.config("luals", {
--- 	cmd = { "lua-language-server" },
--- 	filetypes = { "lua" },
--- 	root_markers = { ".luarc.json", ".luarc.jsonc" },
--- })
---
--- texlab as well
---
--- vim.lsp.enable("luals")
+local lsp_configs = {}
+
+for _, f in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
+	local server_name = vim.fn.fnamemodify(f, ":t:r")
+	table.insert(lsp_configs, server_name)
+end
+
+vim.lsp.enable(lsp_configs)
