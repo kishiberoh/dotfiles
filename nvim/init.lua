@@ -24,6 +24,8 @@ vim.opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
 vim.opt.showmode = false
 vim.opt.scrolloff = 5
 
+-- complement to vimtutor : http://vimgenius.com/lessons
+
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
 
