@@ -24,6 +24,8 @@ vim.opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"
 vim.opt.showmode = false
 vim.opt.scrolloff = 5
 
+-- complement to vimtutor : http://vimgenius.com/lessons
+
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
 
@@ -973,6 +975,43 @@ require("lazy").setup({
 				})
 			end,
 		},
+		-- do i wanna add a keymap to (en/dis)able
+		{
+			'MeanderingProgrammer/render-markdown.nvim',
+			dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+			---@module 'render-markdown'
+			---@type render.md.UserConfig
+			opts = {},
+		},
+		-- WARN : idk abt it 
+		{
+			"L3MON4D3/LuaSnip",
+			-- follow latest release.
+			version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+			-- install jsregexp (optional!).
+			build = "make install_jsregexp",
+			local ls = require("luasnip")
+			vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
+			vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
+			vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+			vim.keymap.set({"i", "s"}, "<C-E>", function()
+				if ls.choice_active() then
+					ls.change_choice(1)
+				end
+			end, {silent = true})
+		},
+		{
+			"nvim-neo-tree/neo-tree.nvim",
+			branch = "v3.x",
+			dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			--"nvim-tree/nvim-web-devicons", -- optional, but recommended
+			},
+			lazy = false, -- neo-tree will lazily load itself
+		},
+		--end of idk
+
 		-- end of pplugin thingy
 	},
 
