@@ -973,6 +973,14 @@ require("lazy").setup({
 				})
 			end,
 		},
+		-- do i wanna add a keymap to (en/dis)able
+		{
+			'MeanderingProgrammer/render-markdown.nvim',
+			dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+			---@module 'render-markdown'
+			---@type render.md.UserConfig
+			opts = {},
+		},
 		-- end of pplugin thingy
 	},
 
