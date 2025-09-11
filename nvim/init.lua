@@ -983,7 +983,7 @@ require("lazy").setup({
 			---@type render.md.UserConfig
 			opts = {},
 		},
-		-- idk abt it 
+		-- WARN : idk abt it 
 		{
 			"L3MON4D3/LuaSnip",
 			-- follow latest release.
@@ -1000,6 +1000,17 @@ require("lazy").setup({
 				end
 			end, {silent = true})
 		},
+		{
+			"nvim-neo-tree/neo-tree.nvim",
+			branch = "v3.x",
+			dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			--"nvim-tree/nvim-web-devicons", -- optional, but recommended
+			},
+			lazy = false, -- neo-tree will lazily load itself
+		},
+		--end of idk
 
 		-- end of pplugin thingy
 	},
