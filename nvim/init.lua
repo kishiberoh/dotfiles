@@ -1,5 +1,6 @@
 -- Cool options
 vim.opt.number = true
+vim.opt.shell = "/usr/bin/fish --login --interactive"
 vim.opt.relativenumber = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.splitbelow = true
@@ -28,13 +29,25 @@ vim.opt.scrolloff = 5
 
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+vim.keymap.set({ "n", "v" }, "<C-s>", ":w<CR>", { silent = true }) -- save file with Ctrl+S
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>", { silent = true }) -- save file with Ctrl+S in insert mode
+vim.keymap.set("i", "<C-h>", "<Left>", { silent = true }) -- move left in insert mode
+vim.keymap.set("i", "<C-j>", "<Down>", { silent = true }) -- move down in insert mode
+vim.keymap.set("i", "<C-k>", "<Up>", { silent = true }) -- move up in insert mode
+vim.keymap.set("i", "<C-l>", "<Right>", { silent = true }) -- move right in insert mode
 
 vim.keymap.set("n", "<leader>ww", ":write<CR>", { desc = "Write" })
 vim.keymap.set("n", "<leader>wq", ":write<CR> :quit<CR>", { desc = "Write and quit" })
 vim.keymap.set("n", "<leader>qq", ":quit<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>qa", ":qall<CR>", { desc = "Quit all" })
-vim.keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
+-- vim.keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
+-- vim.keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
+vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Write" })
+vim.keymap.set("t", "<F2>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -54,9 +67,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 vim.keymap.set("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy" })
-
--- Local leader for lazy
-vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -142,6 +152,7 @@ require("lazy").setup({
 						"hyprlang",
 						"json",
 						"markdown",
+						"markdown_inline",
 						"python",
 						"nix",
 						"scala",
@@ -163,15 +174,15 @@ require("lazy").setup({
 				require("mini.icons").setup()
 			end,
 		},
-		{
-			"echasnovski/mini.files",
-			version = false,
-			config = function()
-				require("mini.files").setup({
-					vim.keymap.set("n", "<leader>e", ":lua MiniFiles.open()<CR>"),
-				})
-			end,
-		},
+		-- {
+		-- 	"echasnovski/mini.files",
+		-- 	version = false,
+		-- 	config = function()
+		-- 		require("mini.files").setup({
+		-- 			-- vim.keymap.set("n", "<leader>ee", ":lua MiniFiles.open()<CR>"),
+		-- 		})
+		-- 	end,
+		-- },
 		{
 			"windwp/nvim-autopairs",
 			event = "InsertEnter", -- Only load when you enter Insert mode
@@ -222,8 +233,28 @@ require("lazy").setup({
 			"nvim-lualine/lualine.nvim",
 			lazy = true,
 			event = { "BufReadPre", "BufNewFile" },
+			opts = function(_, opts)
+				opts = opts or {}
+				opts.sections = opts.sections or {}
+				opts.sections.lualine_c = opts.sections.lualine_c or {}
+				local trouble = require("trouble")
+				local symbols = trouble.statusline({
+					mode = "lsp_document_symbols",
+					groups = {},
+					title = false,
+					filter = { range = true },
+					format = "{kind_icon}{symbol.name:Normal}",
+					-- The following line is needed to fix the background color
+					-- Set it to the lualine section you want to use
+					hl_group = "lualine_c_normal",
+				})
+				table.insert(opts.sections.lualine_c, {
+					symbols.get,
+					cond = symbols.has,
+				})
+			end,
 			config = function()
-				require("lualine").setup()
+				require("lualine").setup({})
 			end,
 		},
 		{
@@ -243,56 +274,56 @@ require("lazy").setup({
 				{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 			},
 		},
-		-- {
-		-- 	"lewis6991/gitsigns.nvim",
-		-- 	signs = {
-		-- 		add = { text = "┃" },
-		-- 		change = { text = "┃" },
-		-- 		delete = { text = "_" },
-		-- 		topdelete = { text = "‾" },
-		-- 		changedelete = { text = "~" },
-		-- 		untracked = { text = "┆" },
-		-- 	},
-		-- 	signs_staged = {
-		-- 		add = { text = "┃" },
-		-- 		change = { text = "┃" },
-		-- 		delete = { text = "_" },
-		-- 		topdelete = { text = "‾" },
-		-- 		changedelete = { text = "~" },
-		-- 		untracked = { text = "┆" },
-		-- 	},
-		-- 	signs_staged_enable = true,
-		-- 	signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-		-- 	numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
-		-- 	linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
-		-- 	word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
-		-- 	watch_gitdir = {
-		-- 		follow_files = true,
-		-- 	},
-		-- 	auto_attach = true,
-		-- 	attach_to_untracked = false,
-		-- 	current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-		-- 	current_line_blame_opts = {
-		-- 		virt_text = true,
-		-- 		virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
-		-- 		delay = 1000,
-		-- 		ignore_whitespace = false,
-		-- 		virt_text_priority = 100,
-		-- 		use_focus = true,
-		-- 	},
-		-- 	current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
-		-- 	sign_priority = 6,
-		-- 	update_debounce = 100,
-		-- 	status_formatter = nil, -- Use default
-		-- 	max_file_length = 40000, -- Disable if file is longer than this (in lines)
-		-- 	preview_config = {
-		-- 		-- Options passed to nvim_open_win
-		-- 		style = "minimal",
-		-- 		relative = "cursor",
-		-- 		row = 0,
-		-- 		col = 1,
-		-- 	},
-		-- },
+		{
+			"lewis6991/gitsigns.nvim",
+			signs = {
+				add = { text = "┃" },
+				change = { text = "┃" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~" },
+				untracked = { text = "┆" },
+			},
+			signs_staged = {
+				add = { text = "┃" },
+				change = { text = "┃" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~" },
+				untracked = { text = "┆" },
+			},
+			signs_staged_enable = true,
+			signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+			numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+			linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+			word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+			watch_gitdir = {
+				follow_files = true,
+			},
+			auto_attach = true,
+			attach_to_untracked = false,
+			current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+			current_line_blame_opts = {
+				virt_text = true,
+				virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+				delay = 1000,
+				ignore_whitespace = false,
+				virt_text_priority = 100,
+				use_focus = true,
+			},
+			current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
+			sign_priority = 6,
+			update_debounce = 100,
+			status_formatter = nil, -- Use default
+			max_file_length = 40000, -- Disable if file is longer than this (in lines)
+			preview_config = {
+				-- Options passed to nvim_open_win
+				style = "minimal",
+				relative = "cursor",
+				row = 0,
+				col = 1,
+			},
+		},
 		{
 			"stevearc/conform.nvim",
 			event = { "BufReadPre", "BufNewFile" },
@@ -422,7 +453,7 @@ require("lazy").setup({
 				},
 			},
 			event = "InsertEnter", -- optional: provides snippets for the snippet source
-			dependencies = { "rafamadriz/friendly-snippets" },
+			-- dependencies = { "rafamadriz/friendly-snippets" },
 
 			-- use a release tag to download pre-built binaries
 			version = "1.*",
@@ -919,7 +950,7 @@ require("lazy").setup({
 					desc = "Dismiss All Notifications",
 				},
 				{
-					"<c-/>",
+					"<leader>te",
 					function()
 						Snacks.terminal()
 					end,
@@ -975,44 +1006,163 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- do i wanna add a keymap to (en/dis)able
 		{
-			'MeanderingProgrammer/render-markdown.nvim',
-			dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+			"MeanderingProgrammer/render-markdown.nvim",
+			dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" }, -- if you use standalone mini plugins
 			---@module 'render-markdown'
 			---@type render.md.UserConfig
 			opts = {},
 		},
-		-- WARN : idk abt it 
 		{
-			"L3MON4D3/LuaSnip",
-			-- follow latest release.
-			version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-			-- install jsregexp (optional!).
-			build = "make install_jsregexp",
-			local ls = require("luasnip")
-			vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
-			vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
-			vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
-			vim.keymap.set({"i", "s"}, "<C-E>", function()
-				if ls.choice_active() then
-					ls.change_choice(1)
-				end
-			end, {silent = true})
+			"folke/trouble.nvim",
+			opts = {}, -- for default options, refer to the configuration section for custom setup.
+			cmd = "Trouble",
+			keys = {
+				{
+					"<leader>xx",
+					"<cmd>Trouble diagnostics toggle<cr>",
+					desc = "Diagnostics (Trouble)",
+				},
+				{
+					"<leader>xX",
+					"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+					desc = "Buffer Diagnostics (Trouble)",
+				},
+				{
+					"<leader>cs",
+					"<cmd>Trouble symbols toggle focus=false<cr>",
+					desc = "Symbols (Trouble)",
+				},
+				{
+					"<leader>cl",
+					"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+					desc = "LSP Definitions / references / ... (Trouble)",
+				},
+				{
+					"<leader>xL",
+					"<cmd>Trouble loclist toggle<cr>",
+					desc = "Location List (Trouble)",
+				},
+				{
+					"<leader>xQ",
+					"<cmd>Trouble qflist toggle<cr>",
+					desc = "Quickfix List (Trouble)",
+				},
+			},
 		},
+		-- add keymaps to show / hide type shit
 		{
 			"nvim-neo-tree/neo-tree.nvim",
 			branch = "v3.x",
 			dependencies = {
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			--"nvim-tree/nvim-web-devicons", -- optional, but recommended
+				"nvim-lua/plenary.nvim",
+				"MunifTanjim/nui.nvim",
+				"nvim-tree/nvim-web-devicons", -- optional, but recommended
 			},
+
+			-- vim.keymap.set("n", "<leader>eo", ":write<CR>", { desc = "Write" }),
 			lazy = false, -- neo-tree will lazily load itself
 		},
-		--end of idk
-
+		{
+			"neovim/nvim-lspconfig",
+			dependencies = {
+				{
+					"folke/lazydev.nvim",
+					ft = "lua", -- only load on lua files
+					opts = {
+						library = {
+							-- See the configuration section for more details
+							-- Load luvit types when the `vim.uv` word is found
+							{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+						},
+					},
+				},
+			},
+			config = function()
+				require("lspconfig").lua_ls.setup({})
+				require("lspconfig").texlab.setup({})
+				require("lspconfig").pyright.setup({})
+			end,
+		},
+		-- {
+		-- 	"kiyoon/jupynium.nvim",
+		-- 	dependencies = { "stevearc/dressing.nvim" },
+		-- 	build = "$HOME/.virtualenvs/jupynium/bin/python -m pip install .",
+		-- 	jupyter_command = "jupyter nbclassic",
+		-- 	-- build = "pip3 install --user .",
+		-- 	-- build = "uv pip install . --python=$HOME/.virtualenvs/jupynium/bin/python",
+		-- 	-- build = "conda run --no-capture-output -n jupynium pip install .",
+		-- },
 		-- end of pplugin thingy
+		{
+			-- see the image.nvim readme for more information about configuring this plugin
+			"3rd/image.nvim",
+			opts = {
+				backend = "kitty", -- whatever backend you would like to use
+				max_width = 100,
+				max_height = 12,
+				max_height_window_percentage = math.huge,
+				max_width_window_percentage = math.huge,
+				window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
+				window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+			},
+		},
+		{
+			"ellisonleao/glow.nvim",
+			config = true,
+			cmd = "Glow",
+			vim.keymap.set("n", "<leader>G", ":Glow<CR>", { desc = "Preview markdown" }),
+		},
+		{
+			"GCBallesteros/jupytext.nvim",
+			lazy = false,
+			config = function()
+				require("jupytext").setup({
+					style = "markdown",
+					output_extension = "md",
+					force_ft = "markdown",
+					auto_sync = true,
+				})
+			end,
+		},
+		{
+			"benlubas/molten-nvim",
+			version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+			lazy = false,
+			build = ":UpdateRemotePlugins",
+			init = function()
+				vim.g.molten_image_provider = "image.nvim"
+				vim.g.molten_output_win_max_height = 12
+				vim.g.molten_virt_text_output = true
+				vim.g.molten_virt_lines_off_by_1 = true
+				vim.g.molten_virt_text_max_lines = 1
+				vim.keymap.set("n", "<leader>mi", ":MoltenInit<CR>", { silent = true, desc = "Molten Init Kernel" })
+				vim.keymap.set(
+					"n",
+					"<leader>ml",
+					":MoltenEvaluateLine<CR>",
+					{ silent = true, desc = "Molten Evaluate Line" }
+				)
+				vim.keymap.set(
+					"v",
+					"<leader>mv",
+					":<C-u>MoltenEvaluateVisual<CR>gv<ESC>",
+					{ silent = true, desc = "Molten Evaluate Visual" }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>mh",
+					":MoltenHideOutput<CR>",
+					{ silent = true, desc = "Molten Hide Output" }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>mo",
+					":noautocmd MoltenEnterOutput<CR>",
+					{ silent = true, desc = "Molten Enter Output" }
+				)
+			end,
+		},
 	},
 
 	-- Configure any other settings here. See the documentation for more details.
@@ -1036,14 +1186,17 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.hl.on_yank()
 	end,
 })
--- need to figure out the lsp stuff thingy so i can start using neovim as my main code editor
 
--- LSP native config
--- local lsp_configs = {}
---
--- for _, f in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
--- 	local server_name = vim.fn.fnamemodify(f, ":t:r")
--- 	table.insert(lsp_configs, server_name)
--- end
---
--- vim.lsp.enable(lsp_configs)
+-- adding diagnostic signs
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "",
+			[vim.diagnostic.severity.INFO] = "",
+			[vim.diagnostic.severity.HINT] = "󰌵",
+		},
+	},
+})
+
+-- LSP thingies ??
