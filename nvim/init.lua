@@ -1,5 +1,6 @@
 -- Cool options
 vim.opt.number = true
+vim.opt.shell = "/usr/bin/fish --login --interactive"
 vim.opt.relativenumber = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.splitbelow = true
@@ -28,13 +29,25 @@ vim.opt.scrolloff = 5
 
 -- Set <space> as map leader (aka hotkey) + some shortcuts
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+vim.keymap.set({ "n", "v" }, "<C-s>", ":w<CR>", { silent = true }) -- save file with Ctrl+S
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>", { silent = true }) -- save file with Ctrl+S in insert mode
+vim.keymap.set("i", "<C-h>", "<Left>", { silent = true }) -- move left in insert mode
+vim.keymap.set("i", "<C-j>", "<Down>", { silent = true }) -- move down in insert mode
+vim.keymap.set("i", "<C-k>", "<Up>", { silent = true }) -- move up in insert mode
+vim.keymap.set("i", "<C-l>", "<Right>", { silent = true }) -- move right in insert mode
 
 vim.keymap.set("n", "<leader>ww", ":write<CR>", { desc = "Write" })
 vim.keymap.set("n", "<leader>wq", ":write<CR> :quit<CR>", { desc = "Write and quit" })
 vim.keymap.set("n", "<leader>qq", ":quit<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>qa", ":qall<CR>", { desc = "Quit all" })
-vim.keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
+-- vim.keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
+-- vim.keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
+vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Write" })
+vim.keymap.set("t", "<F2>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -54,9 +67,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 vim.keymap.set("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy" })
-
--- Local leader for lazy
-vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -142,6 +152,7 @@ require("lazy").setup({
 						"hyprlang",
 						"json",
 						"markdown",
+						"markdown_inline",
 						"python",
 						"nix",
 						"scala",
@@ -415,7 +426,8 @@ require("lazy").setup({
 						"isort", -- python formatter
 						"black", -- python formatter
 						"pylint", -- python linter
-					},
+					},pacman -Qqem > pkglist_aur.txt
+
 				})
 			end,
 		},
@@ -939,7 +951,7 @@ require("lazy").setup({
 					desc = "Dismiss All Notifications",
 				},
 				{
-					"<c-/>",
+					"<leader>te",
 					function()
 						Snacks.terminal()
 					end,
@@ -1073,8 +1085,86 @@ require("lazy").setup({
 				require("lspconfig").pyright.setup({})
 			end,
 		},
+		-- {
+		-- 	"kiyoon/jupynium.nvim",
+		-- 	dependencies = { "stevearc/dressing.nvim" },
+		-- 	build = "$HOME/.virtualenvs/jupynium/bin/python -m pip install .",
+		-- 	jupyter_command = "jupyter nbclassic",
+		-- 	-- build = "pip3 install --user .",
+		-- 	-- build = "uv pip install . --python=$HOME/.virtualenvs/jupynium/bin/python",
+		-- 	-- build = "conda run --no-capture-output -n jupynium pip install .",
+		-- },
 
 		-- end of pplugin thingy
+		{
+			-- see the image.nvim readme for more information about configuring this plugin
+			"3rd/image.nvim",
+			opts = {
+				backend = "kitty", -- whatever backend you would like to use
+				max_width = 100,
+				max_height = 12,
+				max_height_window_percentage = math.huge,
+				max_width_window_percentage = math.huge,
+				window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
+				window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+			},
+		},
+		{
+			"ellisonleao/glow.nvim",
+			config = true,
+			cmd = "Glow",
+			vim.keymap.set("n", "<leader>G", ":Glow<CR>", { desc = "Preview markdown" }),
+		},
+		{
+			"GCBallesteros/jupytext.nvim",
+			lazy = false,
+			config = function()
+				require("jupytext").setup({
+					style = "markdown",
+					output_extension = "md",
+					force_ft = "markdown",
+					auto_sync = true,
+				})
+			end,
+		},
+		{
+			"benlubas/molten-nvim",
+			version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+			lazy = false,
+			build = ":UpdateRemotePlugins",
+			init = function()
+				vim.g.molten_image_provider = "image.nvim"
+				vim.g.molten_output_win_max_height = 12
+				vim.g.molten_virt_text_output = true
+				vim.g.molten_virt_lines_off_by_1 = true
+				vim.g.molten_virt_text_max_lines = 1
+				vim.keymap.set("n", "<leader>mi", ":MoltenInit<CR>", { silent = true, desc = "Molten Init Kernel" })
+				vim.keymap.set(
+					"n",
+					"<leader>ml",
+					":MoltenEvaluateLine<CR>",
+					{ silent = true, desc = "Molten Evaluate Line" }
+				)
+				vim.keymap.set(
+					"v",
+					"<leader>mv",
+					":<C-u>MoltenEvaluateVisual<CR>gv<ESC>",
+					{ silent = true, desc = "Molten Evaluate Visual" }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>mh",
+					":MoltenHideOutput<CR>",
+					{ silent = true, desc = "Molten Hide Output" }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>mo",
+					":noautocmd MoltenEnterOutput<CR>",
+					{ silent = true, desc = "Molten Enter Output" }
+				)
+			end,
+		},
 	},
 
 	-- Configure any other settings here. See the documentation for more details.
