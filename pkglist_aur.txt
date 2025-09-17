@@ -1,6 +1,12 @@
+ags-hyprpanel-git
 autofs
+dxvk-bin
+matugen-bin
+neofetch
+paru
 rar
 spotify
+vscodium-bin
 wlogout
 yay
 yay-debug
