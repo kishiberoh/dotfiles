@@ -1,0 +1,298 @@
+# Use a central Rosé Pine Dawn palette
+palette = "rose-pine-dawn"
+
+[palettes.rose-pine-dawn]
+base   = "#faf4ed"
+overlay = "#f2e9e1"
+subtle  = "#797593"
+text    = "#575279"
+love    = "#b4637a"
+gold    = "#ea9d34"
+rose    = "#d7827e"
+pine    = "#286983"
+foam    = "#56949f"
+iris    = "#907aa9"
+
+# Prompt layout
+format = """
+[](bold iris) $username[@](subtle)$hostname [](foam) $directory $git_branch$git_status
+$golang$python$nodejs$aws$buf$bun$c$cpp$cmake$conda$crystal$dart$deno$docker_context$elixir$elm$fennel$fossil_branch$gcloud$git_commit$guix_shell$haskell$haxe$hg_branch$java$julia$kotlin$lua$memory_usage$meson$nim$nix_shell$ocaml$package$perl$php$pijul_channel$pixi$rlang$ruby$rust$scala$swift$zig$gradle$os$time$cmd_duration
+$character """
+
+# --- Core modules ---
+[username]
+show_always = true
+style_user = "bold iris"
+style_root = "bold love"
+
+[hostname]
+ssh_only = false
+style = "subtle"
+
+[directory]
+style = "foam"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "gold"
+
+[git_status]
+staged = "[●${count}](rose)"
+conflicted = "[✖${count}](love)"
+deleted = "[✖${count}](love)"
+modified = "[!${count}](gold)"
+renamed = "[➜${count}](foam)"
+untracked = "[?${count}](subtle)"
+ahead = "[⇡${count}](iris)"
+behind = "[⇣${count}](iris)"
+
+[character]
+success_symbol = "[➜](bold pine) "
+error_symbol   = "[✗](bold love) "
+
+# --- Extras ---
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "iris"
+format = "[󰃰 $time]($style) "
+
+[cmd_duration]
+min_time = 500  # ms before it shows
+style = "subtle"
+format = "[󰥔 $duration]($style) "
+
+# --- Language Runtime stuff ----
+[aws]
+symbol = "  "
+style = "foam"
+
+[buf]
+symbol = " "
+style = "foam"
+
+[bun]
+symbol = " "
+style = "foam"
+
+[c]
+symbol = " "
+style = "foam"
+
+[cpp]
+symbol = " "
+style = "foam"
+
+[cmake]
+symbol = " "
+style = "foam"
+
+[conda]
+symbol = " "
+style = "foam"
+
+[crystal]
+symbol = " "
+style = "foam"
+
+[dart]
+symbol = " "
+style = "foam"
+
+[deno]
+symbol = " "
+style = "foam"
+
+[docker_context]
+symbol = " "
+style = "foam"
+
+[elixir]
+symbol = " "
+style = "foam"
+
+[elm]
+symbol = " "
+style = "foam"
+
+[fennel]
+symbol = " "
+style = "foam"
+
+[fossil_branch]
+symbol = " "
+style = "foam"
+
+[gcloud]
+symbol = "  "
+style = "foam"
+
+[git_commit]
+tag_symbol = '  '
+style = "foam"
+
+[golang]
+symbol = " "
+style = "foam"
+
+[guix_shell]
+symbol = " "
+style = "foam"
+
+[haskell]
+symbol = " "
+style = "foam"
+
+[haxe]
+symbol = " "
+style = "foam"
+
+[hg_branch]
+symbol = " "
+style = "foam"
+
+[java]
+symbol = " "
+style = "foam"
+
+[julia]
+symbol = " "
+style = "foam"
+
+[kotlin]
+symbol = " "
+style = "foam"
+
+[lua]
+symbol = " "
+style = "foam"
+
+[memory_usage]
+symbol = "󰍛 "
+style = "foam"
+
+[meson]
+symbol = "󰔷 "
+style = "foam"
+
+[nim]
+symbol = "󰆥 "
+style = "foam"
+
+[nix_shell]
+symbol = " "
+style = "foam"
+
+[nodejs]
+symbol = " "
+style = "foam"
+
+[ocaml]
+symbol = " "
+style = "foam"
+
+[os]
+style = "bold iris"
+format = "[$symbol]($style)"
+disabled = false
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CachyOS = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+Nobara = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
+style = "foam"
+
+[perl]
+symbol = " "
+style = "foam"
+
+[php]
+symbol = " "
+style = "foam"
+
+[pijul_channel]
+symbol = " "
+style = "foam"
+
+[pixi]
+symbol = "󰏗 "
+style = "foam"
+
+[python]
+symbol = " "
+style = "foam"
+
+[rlang]
+symbol = "󰟔 "
+style = "foam"
+
+[ruby]
+symbol = " "
+style = "foam"
+
+[rust]
+symbol = "󱘗 "
+style = "foam"
+
+[scala]
+symbol = " "
+style = "foam"
+
+[swift]
+symbol = " "
+style = "foam"
+
+[zig]
+symbol = " "
+style = "foam"
+
+[gradle]
+symbol = " "
+style = "foam"

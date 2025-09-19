@@ -1,3 +1,4 @@
+require("discipline").cowboy()
 -- Cool options
 vim.opt.number = true
 vim.opt.shell = "/usr/bin/fish --login --interactive"
@@ -47,6 +48,7 @@ vim.keymap.set("n", "<leader>qa", ":qall<CR>", { desc = "Quit all" })
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
 vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Write" })
+vim.keymap.set("n", "<leader>rn", ":IncRename ", { desc = "Rename var" })
 vim.keymap.set("t", "<F2>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Bootstrap lazy.nvim
@@ -426,8 +428,7 @@ require("lazy").setup({
 						"isort", -- python formatter
 						"black", -- python formatter
 						"pylint", -- python linter
-					},pacman -Qqem > pkglist_aur.txt
-
+					},
 				})
 			end,
 		},
@@ -469,7 +470,7 @@ require("lazy").setup({
 				-- C-e: Hide menu
 				-- C-k: Toggle signature help (if signature.enabled = true)
 
-				keymap = { preset = "enter" },
+				keymap = { preset = "super-tab" },
 
 				-- (Default) Only show the documentation popup when manually triggered
 				-- how to manually trigger ?
@@ -493,7 +494,7 @@ require("lazy").setup({
 			opts = {
 				bigfile = { enabled = true },
 				dashboard = { enabled = true },
-				explorer = { enabled = false },
+				explorer = { enabled = true, auto_close = true },
 				indent = { enabled = true },
 				input = { enabled = true },
 				notifier = {
@@ -1051,19 +1052,6 @@ require("lazy").setup({
 				},
 			},
 		},
-		-- add keymaps to show / hide type shit
-		{
-			"nvim-neo-tree/neo-tree.nvim",
-			branch = "v3.x",
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-				"MunifTanjim/nui.nvim",
-				"nvim-tree/nvim-web-devicons", -- optional, but recommended
-			},
-
-			-- vim.keymap.set("n", "<leader>eo", ":write<CR>", { desc = "Write" }),
-			lazy = false, -- neo-tree will lazily load itself
-		},
 		{
 			"neovim/nvim-lspconfig",
 			dependencies = {
@@ -1083,6 +1071,10 @@ require("lazy").setup({
 				require("lspconfig").lua_ls.setup({})
 				require("lspconfig").texlab.setup({})
 				require("lspconfig").pyright.setup({})
+				require("lspconfig").clangd.setup({
+					cmd = { "clangd" },
+					filetypes = { "c", "cpp", "objc", "objcpp" },
+				})
 			end,
 		},
 		-- {
@@ -1096,6 +1088,116 @@ require("lazy").setup({
 		-- },
 
 		-- end of pplugin thingy
+		{
+			"folke/noice.nvim",
+			event = "VeryLazy",
+			dependencies = {
+				-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+				"MunifTanjim/nui.nvim",
+				"rcarriga/nvim-notify",
+			},
+			config = function()
+				require("noice").setup({
+					cmdline = {
+						view = "cmdline",
+					},
+					lsp = {
+						-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+						override = {
+							["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+							["vim.lsp.util.stylize_markdown"] = true,
+							["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+						},
+					},
+					-- you can enable a preset for easier configuration
+					presets = {
+						bottom_search = true, -- use a classic bottom cmdline for search
+						command_palette = true, -- position the cmdline and popupmenu together
+						long_message_to_split = true, -- long messages will be sent to a split
+						inc_rename = false, -- enables an input dialog for inc-rename.nvim
+						lsp_doc_border = false, -- add a border to hover docs and signature help
+					},
+				})
+			end,
+		},
+		-- Incremental rename
+		{
+			"smjonas/inc-rename.nvim",
+			cmd = "IncRename",
+			config = true,
+			opts = {
+				input_buffer_type = "snacks",
+			},
+		},
+		-- -- kinda nice for the future maybe ? still a little bug with horizontal panes
+		--
+		-- {
+		-- 	"b0o/incline.nvim",
+		-- 	dependencies = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
+		-- 	event = "BufReadPre",
+		-- 	config = function()
+		-- 		local helpers = require("incline.helpers")
+		-- 		local navic = require("nvim-navic")
+		-- 		local devicons = require("nvim-web-devicons")
+		--
+		-- 		-- Rosé Pine Dawn palette
+		-- 		local dawn = {
+		-- 			base = "#faf4ed",
+		-- 			surface = "#fffaf3",
+		-- 			overlay = "#f2e9e1",
+		-- 			muted = "#9893a5",
+		-- 			subtle = "#797593",
+		-- 			text = "#575279",
+		-- 			love = "#b4637a",
+		-- 			gold = "#ea9d34",
+		-- 			rose = "#d7827e",
+		-- 			pine = "#286983",
+		-- 			foam = "#56949f",
+		-- 			iris = "#907aa9",
+		-- 			hl_low = "#f4ede8",
+		-- 			hl_med = "#eee9e6",
+		-- 			hl_high = "#dfdad9",
+		-- 		}
+		--
+		-- 		require("incline").setup({
+		-- 			window = {
+		-- 				padding = 0,
+		-- 				margin = { horizontal = 0, vertical = 0 },
+		-- 			},
+		-- 			render = function(props)
+		-- 				local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+		-- 				if filename == "" then
+		-- 					filename = "[No Name]"
+		-- 				end
+		--
+		-- 				local ft_icon, ft_color = devicons.get_icon_color(filename)
+		-- 				local modified = vim.bo[props.buf].modified
+		--
+		-- 				local res = {
+		-- 					ft_icon
+		-- 							and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) }
+		-- 						or "",
+		-- 					" ",
+		-- 					{ filename, gui = modified and "bold,italic" or "bold", guifg = dawn.text },
+		-- 					guibg = dawn.overlay, -- instead of #44406e
+		-- 				}
+		--
+		-- 				if props.focused then
+		-- 					for _, item in ipairs(navic.get_data(props.buf) or {}) do
+		-- 						table.insert(res, {
+		-- 							{ " > ", guifg = dawn.subtle },
+		-- 							{ item.icon, guifg = dawn.foam },
+		-- 							{ item.name, guifg = dawn.text },
+		-- 						})
+		-- 					end
+		-- 				end
+		--
+		-- 				table.insert(res, " ")
+		-- 				return res
+		-- 			end,
+		-- 		})
+		-- 	end,
+		-- },
 		{
 			-- see the image.nvim readme for more information about configuring this plugin
 			"3rd/image.nvim",

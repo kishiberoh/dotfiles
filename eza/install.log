@@ -1,0 +1,10 @@
+[16:37:03 2025-09-17] FETCHING Version 2.41.0
+[16:37:03 2025-09-17] CREATING /home/mche3kek/.spicetify
+[16:37:03 2025-09-17] DOWNLOADING https://github.com/spicetify/cli/releases/download/v2.41.0/spicetify-2.41.0-linux-amd64.tar.gz
+[16:37:04 2025-09-17] EXTRACTING /home/mche3kek/.spicetify/spicetify.tar.gz
+[16:37:04 2025-09-17] SETTING EXECUTABLE PERMISSIONS TO /home/mche3kek/.spicetify/spicetify
+[16:37:04 2025-09-17] REMOVING /home/mche3kek/.spicetify/spicetify.tar.gz
+[16:37:04 2025-09-17] APPENDING /home/mche3kek/.spicetify to PATH in /home/mche3kek/.bashrc
+[16:37:04 2025-09-17] APPENDING /home/mche3kek/.spicetify to PATH in /home/mche3kek/.bash_profile
+[16:37:04 2025-09-17] spicetify v2.41.0 was installed successfully to /home/mche3kek/.spicetify
+[16:37:04 2025-09-17] Run 'spicetify --help' to get started
