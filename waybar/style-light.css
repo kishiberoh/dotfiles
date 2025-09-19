@@ -29,8 +29,9 @@ label.module {
     border-radius: 1rem;
 }
 #clock {
-    color: @gold;
+    color: @text;
 }
+#bluetooth,
 #network,
 #pulseaudio {
     padding: 0 1rem 0 0.7rem;
@@ -67,6 +68,11 @@ label.module:hover,
     color: @highlightLow;
 }
 
+#tags button,
+#workspace button.active {
+    color: @iris;
+}
+
 #tags button.focused,
 #tags button.occupied,
 #workspaces button,
@@ -83,4 +89,21 @@ label.module:hover,
 #tags button.urgent,
 #workspaces button.urgent {
     background: @love;
+}
+
+#battery.charging {
+    color: @pine;
+}
+
+#battery.critical:not(.charging) {
+    color: @love;
+}
+
+#custom-power {
+    color: @foam;
+}
+
+#custom-media,
+#cava {
+    color: @text;
 }

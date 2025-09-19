@@ -46,3 +46,4 @@ theme = Rose Pine Dawn
 font-family = "Fira Code Nerd Font"
 shell-integration = fish
 command = /usr/bin/fish --login --interactive
+window-decoration = none
