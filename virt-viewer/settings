@@ -1,0 +1,6 @@
+[virt-viewer]
+share-clipboard=true
+ask-quit=true
+#advos
+[def5509c-a663-49ca-b68e-b49ccc208824]
+monitor-mapping=1:2;
