@@ -16,7 +16,7 @@ iris    = "#907aa9"
 # Prompt layout
 format = """
 [](bold iris) $username[@](subtle)$hostname [](foam) $directory $git_branch$git_status
-$golang$python$nodejs$aws$buf$bun$c$cpp$cmake$conda$crystal$dart$deno$docker_context$elixir$elm$fennel$fossil_branch$gcloud$git_commit$guix_shell$haskell$haxe$hg_branch$java$julia$kotlin$lua$memory_usage$meson$nim$nix_shell$ocaml$package$perl$php$pijul_channel$pixi$rlang$ruby$rust$scala$swift$zig$gradle$os$time$cmd_duration
+$golang$python$nodejs$aws$buf$bun$c$cpp$cmake$conda$crystal$dart$deno$docker_context$elixir$elm$fennel$fossil_branch$gcloud$git_commit$guix_shell$haskell$haxe$hg_branch$java$julia$kotlin$lua$memory_usage$meson$nim$nix_shell$ocaml$package$perl$php$pijul_channel$pixi$rlang$ruby$rust$scala$swift$zig$gradle$os$battery$time$cmd_duration
 $character """
 
 # --- Core modules ---
@@ -24,6 +24,18 @@ $character """
 show_always = true
 style_user = "bold iris"
 style_root = "bold love"
+
+[battery]
+disabled = false
+full_symbol = "󰁹 "   # full
+charging_symbol = "󰂄 " # charging
+discharging_symbol = "󰁽 " # discharging
+unknown_symbol = "󰂑 "
+empty_symbol = "󰂎 "
+format = "[$symbol$percentage](pine) "
+
+[[battery.display]]
+threshold = 101
 
 [hostname]
 ssh_only = false
