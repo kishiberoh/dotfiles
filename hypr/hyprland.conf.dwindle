@@ -99,8 +99,8 @@ general {
     # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
     allow_tearing = false
 
-    # layout = dwindle
-    layout = scroller
+    layout = dwindle
+    # layout = scroller
     # layout = master
 }
 
@@ -152,18 +152,6 @@ dwindle {
 # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
 master {
     new_status = true
-}
-
-plugin:scroller {
-    column_widths = onesixth onefourth onethird threeeighths onehalf twothirds one
-    window_heights = onesixth onefourth onethird onehalf twothirds fivesixths one
-    focus_wrap = false
-    cyclesize_wrap = false
-    center_row_if_space_available = false
-    jump_labels_font = FiraCode Nerd Font
-    jump_labels_color = rgba(df99dfDD)
-    jump_labels_keys=asdfghjkl
-    jump_labels_scale=0.2
 }
 
 # https://wiki.hyprland.org/Configuring/Variables/#misc
@@ -230,51 +218,22 @@ bind = $mainMod, Return, exec, $terminal
 bind = $mainMod, Q, killactive,
 bind = $mainMod, M, exit,
 bind = $mainMod, E, exec, $fileManager
-# bind = $mainMod, L, togglefloating,
+bind = $mainMod, L, togglefloating,
 bind = $mainMod, F, fullscreen
 bind = $mainMod, Space, exec, $menu
 bind = $mainMod, D, exec, $menu
-# bind = $mainMod, H, cyclenext
+bind = $mainMod, H, cyclenext
 bind = $mainMod, P, pseudo, # dwindle
-# bind = $mainMod, J, togglesplit, # dwindle
+bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
-# bind = $mainMod, R, exec, wlogout
-# bind = $mainMod, g, hyprexpo:expo, toggle
-
-bind = $mainMod, X, scroller:pin, 
-# bind = $mainMod, 
-
-bind = $mainMod CTRL, H, scroller:movewindow, left
-bind = $mainMod CTRL, L, scroller:movewindow, right
-bind = $mainMod CTRL, K, scroller:movewindow, up
-bind = $mainMod CTRL, J, scroller:movewindow, down
-
-bind = $mainMod, period, scroller:cyclesize, next  # Grow width
-bind = $mainMod, comma, scroller:cyclesize, prev  # Shrink width
-# bind = $mainMod, period, scroller:cyclewidth, next  # Grow width
-# bind = $mainMod, comma, scroller:cyclewidth, prev  # Shrink width
-
-bind = $mainMod, R, scroller:setmode, row  # Row Mode
-bind = $mainMod SHIFT, R, scroller:setmode, col  # Column Mode
-bind = $mainMod, Z, scroller:admitwindow,  # Add to column
-bind = $mainMod SHIFT, Z, scroller:expelwindow,  # Expel from column
-# overview keys
-# bind key to toggle overview (normal)
-bind = $mainMod, G, scroller:toggleoverview  # Expo View
-bind = $mainMod SHIFT, G, scroller:jump  # Expo View EasyMotion
-
+bind = $mainMod, R, exec, wlogout
+bind = $mainMod, g, hyprexpo:expo, toggle
 
 # Move focus with mainMod + arrow keys
 bind = $mainMod, left, movefocus, l
 bind = $mainMod, right, movefocus, r
 bind = $mainMod, up, movefocus, u
 bind = $mainMod, down, movefocus, d
-bind = $mainMod, H, movefocus, l
-bind = $mainMod, L, movefocus, r
-bind = $mainMod, K, movefocus, u
-bind = $mainMod, J, movefocus, d
-bind = $mainMod, B, movefocus, b
-bind = $mainMod SHIFT, B, movefocus, e
 
 # Switch workspaces with mainMod + [0-9]
 bind = $mainMod, 1, workspace, 1
@@ -320,16 +279,10 @@ bind = $mainMod, mouse_up, workspace, e-1
 # Move/resize windows with mainMod + LMB/RMB and dragging
 bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
-
 binde = $mainMod SHIFT, right, resizeactive, 10 0
 binde = $mainMod SHIFT, left, resizeactive, -10 0
 binde = $mainMod SHIFT, up, resizeactive, 0 -10
 binde = $mainMod SHIFT, down, resizeactive, 0 10
-
-binde = $mainMod SHIFT, L, resizeactive, 10 0
-binde = $mainMod SHIFT, H, resizeactive, -10 0
-binde = $mainMod SHIFT, K, resizeactive, 0 -10
-binde = $mainMod SHIFT, J, resizeactive, 0 10
 
 binde =, XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+
 binde =, XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%- 
