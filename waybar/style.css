@@ -1,86 +1,101 @@
-@import url("./rose-pine-dawn.css");
-
 * {
-    transition: 150ms;
+    border: none;
+    font-size: 14px;
+    font-family: "JetBrainsMono Nerd Font,JetBrainsMono NF" ;
+    min-height: 25px;
 }
 
-#waybar {
-    background: @base;
-    color: @text;
+window#waybar {
+  background: transparent;
+  margin: 5px;
+ }
+
+#custom-logo {
+  padding: 0 10px;
 }
 
-.modules-right.horizontal {
-    margin-right: 4px;
+.modules-right {
+  padding-left: 5px;
+  border-radius: 15px 0 0 15px;
+  margin-top: 2px;
+  background: #000000;
 }
 
-#tray > widget {
-    border-radius: 1rem;
+.modules-center {
+  padding: 0 15px;
+  margin-top: 2px;
+  border-radius: 15px 15px 15px 15px;
+  background: #000000;
 }
 
-#tray > widget > image {
-    padding: 0 0.5rem;
+.modules-left {
+  border-radius: 0 15px 15px 0;
+  margin-top: 2px;
+  background: #000000;
 }
 
-label.module {
-    font-family: JetbrainsMono Nerd Font;
-    font-size: 13px;
-    padding: 0 10px;
-    margin: 2px 0;
-    border-radius: 1rem;
-}
-#clock {
-    color: @gold;
-}
+#battery,
+#custom-clipboard,
+#custom-colorpicker,
+#custom-powerDraw,
+#bluetooth,
+#pulseaudio,
 #network,
+#disk,
+#memory,
+#backlight,
+#cpu,
+#temperature,
+#custom-weather,
+#idle_inhibitor,
+#jack,
+#tray,
+#window,
+#workspaces,
+#clock {
+  padding: 0 5px;
+}
 #pulseaudio {
-    padding: 0 1rem 0 0.7rem;
-    font-size: 16px;
+  padding-top: 3px;
 }
 
-label.module:hover,
-#tray > widget:hover {
-    background: @highlightMed;
+#temperature.critical,
+#pulseaudio.muted {
+  color: #FF0000;
+  padding-top: 0;
 }
 
-#tags,
-#workspaces {
-    margin: 2px;
-    padding: 0 4px;
-    border-radius: 1rem;
-    background: none;
+
+
+
+#clock{
+  color: #5fd1fa;
 }
 
-#tags button,
-#workspaces button {
-    font-size: 0;
-    min-width: 4px;
-    min-height: 0;
-    margin: 0;
-    padding: 0;
-    margin: 9px 4px;
-    border-radius: 1rem;
+#battery.charging {
+    color: #ffffff;
+    background-color: #26A65B;
 }
 
-#tags button,
-#workspaces button.empty {
-    background: @subtle;
-    color: @highlightLow;
+#battery.warning:not(.charging) {
+    background-color: #ffbe61;
+    color: black;
 }
 
-#tags button.focused,
-#tags button.occupied,
-#workspaces button,
-#workspaces button.active {
-    background: @rose;
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
-#tags button.focused,
-#workspaces button.active {
-    min-width: 1.75rem;
-    margin: 8px 0.3rem;
-}
 
-#tags button.urgent,
-#workspaces button.urgent {
-    background: @love;
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
 }

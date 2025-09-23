@@ -1,206 +1,217 @@
 {
-    "layer": "top",
-    "position": "top",
-    "height": 28,
-    "reload_style_on_change": true,
-    "modules-left": [
-        "niri/workspaces",
-	"cava",
-	"custom/media#1",
-	"custom/media#2",
-	"custom/media#3",
-    ],
-    "modules-center": [
-    	"idle_inhibitor",
-        "clock",
-	"custom/weather",
-    ],
-    "modules-right": [
-        "tray",
-	"bluetooth",
-	"network",
-	"custom/swap",
-	"custom/audio_idle_inhibitor",
-        "pulseaudio",
-        "battery",
-	"custom/notifications",
-	"custom/power",
-    ],
-    "cava": {
-        // "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
-        "framerate": 60,
-        "autosens": 1,
-        "sensitivity": 2,
-        "bars": 14,
-        "lower_cutoff_freq": 50,
-        "higher_cutoff_freq": 10000,
-        "hide_on_silence": false,
-        // "format_silent": "quiet",
-        "method": "pulse",
-        "source": "auto",
-        "stereo": false,
-        "reverse": false,
-        "bar_delimiter": 0,
-        "monstercat": true,
-        "waves": true,
-        "noise_reduction": 0.77,
-        "input_delay": 2,
-        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-        "actions": {
-            "on-click-right": "mode"
-        }
-    },
-    "custom/media#2": {
-        "format": " {} {icon} ",
-        "format-icons": {
-            "spotify": "",
-            "default": "🎵"
-        },
-        "exec": "~/.config/waybar/playerinfo.sh",
-        "escape": true,
-        "return-type": "json",
-        "tooltip": true,
-        "on-click": "playerctl play-pause",
-    },
-    "custom/media#1": {
-        "format": "",
-        "on-click": "playerctl previous"
-    },
-    "custom/media#3": {
-      "format": "",
-      "on-click": "playerctl next"
-    },
-    "river/tags": {
-        "num-tags": 5,
-    },
-    "niri/workspaces": {
-        "all-outputs": true,
-	"format" : "●",
-    },
-    "custom/player": {
-        "exec": "sb-player",
-        "max-length": 30,
-        "interval": 1,
-        "on-click": "playerctl play-pause",
-    },
-    "custom/dollar": {
-        "exec": "sb-dollar",
-        "interval": 21600,
-    },
-    "custom/swap": {
-    	"on-click": "darkman toggle",
-    	"tooltip": "Swap dark/light mode",
-    	"format": " "
-    },
-    "pulseaudio": {
-        "format": "{icon}",
-        "format-icons": ["󰕿", "󰖀", "󰕾"],
-        "format-muted": "󰝟",
-        //"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-	"on-click": "pavucontrol",
-        "tooltip-format": "{volume}% ({desc})",
-        "scroll-step": 5,
-    },
-    "clock": {
-      "interval": 60,
-      "format": "{:%a %d  %R}",
-      "tooltip-format": "<tt><small>{calendar}</small></tt>",
-      "calendar": {
-          "mode-mon-col": 3,
-          "format": {
-              "months": "<b>{}</b>",
-              "days": "{}",
-              "weeks": "<b>{:%W}</b>",
-              "weekdays": "<b>{}</b>",
-              "today": "<b><u>{}</u></b>",
-          },
+  "layer": "top", "position": "top",
+  "modules-left": ["custom/logo", "clock",  "custom/weather", "disk", "memory", "cpu", "temperature", "custom/powerDraw", "hyprland/window" ],
+  "modules-center": [  "hyprland/workspaces"],
+  "modules-right": ["tray",  "custom/clipboard", "backlight", "idle_inhibitor", "custom/colorpicker", "bluetooth", "pulseaudio", "network",  "battery" ],
+  "reload_style_on_change":true,
+
+  "custom/logo": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "hyprland/workspaces": {
+	"format": "{icon}",
+	"format-icons": {
+		"1": "",
+		"2": "",
+		"3": "",
+		"4": "",
+		"5": "",
+		"6": "",
+		"active": "",
+		"default": "" 
+	},
+       "persistent-workspaces": {
+         "*": [ 2, 3, 4, 5, 6 ]
+       }
+},
+
+"idle_inhibitor":{
+  "format": "<span font='12'>{icon} </span>",
+  "format-icons": {
+    "activated":"󰈈",
+    "deactivated":"󰈉"
+  }
+},
+
+"custom/weather": {
+  "format": "{}",
+  "return-type": "json",
+  "exec": "~/.config/waybar/scripts/weather.sh",
+  "interval": 10,
+  "on-click": "firefox https://wttr.in"
+},
+
+"custom/clipboard":{
+  "format":"",
+  "on-click": "cliphist list | rofi -dmenu | cliphist decode | wl-copy",
+  "interval":86400
+},
+
+
+"clock": {
+      "format": "{:%I:%M:%S %p}",
+      "interval":1,
+      "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+      "calendar-weeks-pos": "right",
+      "today-format": "<span color='#7645AD'><b><u>{}</u></b></span>",
+      "format-calendar": "<span color='#aeaeae'><b>{}</b></span>",
+      "format-calendar-weeks": "<span color='#aeaeae'><b>W{:%V}</b></span>",
+      "format-calendar-weekdays": "<span color='#aeaeae'><b>{}</b></span>"
       },
-      "actions": {
-          "on-click": "mode",
-          "on-scroll-up": "shift_up",
-          "on-scroll-down": "shift_down",
-      },
+
+  "bluetooth": {
+  "format-on": "",
+  "format-off": "",
+  "format-disabled": "󰂲",
+  "format-connected": "󰂴",
+  "format-connected-battery": "{device_battery_percentage}% 󰂴",
+  "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+  "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+  "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+  "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+  "on-click": "rofi-bluetooth",
+ }, 
+
+"network": {
+      "format-wifi": " ",
+      "format-ethernet":" ",
+      "format-disconnected": "",
+      "tooltip-format": "{ipaddr}",
+      "tooltip-format-wifi": "{essid} ({signalStrength}%)  | {ipaddr}",
+      "tooltip-format-ethernet": "{ifname} 🖧 | {ipaddr}",
+      "on-click": "networkmanager_dmenu"
     },
-    "network": {
-	"family": "ipv4",
-	"format": "⚠",
-	"format-wifi": " ",
-    	"format-ethernet": " ",
-    	"format-disconnected": "⚠",
-    	"on-click": "networkmanager_dmenu",
-    	"tooltip": true,
-    	"tooltip-format": " {essid} "
-    },
-    "tray": {
-        "icon-size": 16,
-        "spacing": 2,
-    },
-    "battery": {
+
+"battery": {
+    "interval":1,
         "states": {
             "good": 95,
             "warning": 30,
-            "critical": 15
+            "critical": 20
         },
-        //"format": "{icon}  {capacity: >3}%",
-	"format": "{capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-	"on-click": "mate-power-statistics",
-        //"format-icons": ["", "", "", "", ""],
-	"interval": 5
+        "format": "{capacity}%  {icon} ",
+        "format-charging": "{capacity}% 󰂄 ",
+        "format-plugged": "{capacity}% 󰂄 ",
+        "format-alt": "{time} {icon}",
+            "format-icons": [
+          "󰁻",
+          "󰁼",
+          "󰁾",
+          "󰂀",
+          "󰂂",
+          "󰁹"
+        ],
     },
-    "custom/power": {
-        "format": "⏻",
-        //"on-click": "~/.config/sway/scripts/rofi_",
-        "on-click": "~/.config/niri/scripts/power-menu.sh",
-        "tooltip": false
-    },
-    "custom/notifications": {
-        "format": "{}",
-        "on-click": "swaync-client -t -sw",
-        "exec": "~/.config/waybar/scripts/waybar-notification.sh",
-        "tooltip": false,
-        "interval": 1
-    },
-    "custom/audio_idle_inhibitor": {
-        "format": "{icon}",
-	"exec": "sway-audio-idle-inhibit --dry-print-both-waybar",
-	"exec-if": "which sway-audio-idle-inhibit",
-	"return-type": "json",
-	"format-icons": {
-	    "output": "",
-	    "input": "",
-	    "output-input": "  ",
-	    "none": ""
-	}
-    },
-    "bluetooth": {
-        "on-click": "bzmenu -l custom --launcher-command \"fuzzel --config=$HOME/.config/fuzzel/fuzzel-settings.ini -d -p '{prompt}'\"",
-	"format": "",
-	"format-disabled": "󰂲",
-	"format-off": "󰂲",
-	"format-connected": "󰂰 {device_alias}",
-	"format-connected-battery": "󰂰 {device_alias} {device_battery_percentage}%",
-	// "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
-	"tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-	"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
-    },
-    "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-            "activated": "󰒳 ",
-            "deactivated": "󰒲 "
-        }
-    },
-    "custom/weather": {
-        "format": "{}°",
-        "tooltip": true,
-        "interval": 1800,
-        "exec": "wttrbar --location selestat --date-format %d-%m-%Y --lang fr",
-        "return-type": "json"
-    },
+"backlight": {
+  "device": "intel_backlight",
+  "format": "<span font='12'>{icon}</span>",
+  "format-icons": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ],
+  "on-scroll-down": "light -A 10",
+  "on-scroll-up": "light -U 10",
+  "smooth-scrolling-threshold": 1
+  },
+
+ "disk": {
+    "interval": 30,
+    "format": "  {percentage_used}%",
+    "path": "/"
+  },
+
+  "custom/colorpicker": {
+    "format": "{}",
+    "return-type": "json",
+    "interval": "once",
+    "exec": "~/.config/waybar/scripts/colorpicker.sh -j",
+    "on-click": "sleep 1 && ~/.config/waybar/scripts/colorpicker.sh",
+    "signal": 1
+  },
+
+  "cpu": {
+      "interval": 1,
+      "format": " {usage}%",
+      "min-length": 6,
+      "max-length": 6,
+      "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+ },
+
+"memory": {
+  "format": " {percentage}%"
+},
+
+ "hyprland/window": {
+    "format": "( {class} )",
+    "rewrite": {
+         "(.*) - Mozilla Firefox": "🌎 $1",
+         "(.*) - zsh": "> [$1]"
+    }
+},
+
+"temperature": {
+  "format": " {temperatureC}°C",            
+  "format-critical": " {temperatureC}°C",
+  "interval": 1,
+  "critical-threshold": 80,
+  "on-click": "foot btop",
+ },
+
+"pulseaudio": {
+  "format": "{volume}% {icon}",
+  "format-bluetooth":"󰂰",
+  "format-muted": "<span font='12'></span>",
+  "format-icons": {
+    "headphones": "",
+    "bluetooth": "󰥰",
+    "handsfree": "",
+    "headset": "󱡬",
+    "phone": "",
+    "portable": "",
+    "car": "",
+    "default": ["🕨","🕩","🕪"]
+  },
+  "justify": "center",
+  "on-click": "amixer sset Master toggle",
+  "on-click-right": "pavucontrol",
+  "tooltip-format": "{icon}  {volume}%"
+},
+
+"jack": {
+    "format": "{} 󱎔",
+    "format-xrun": "{xruns} xruns",
+    "format-disconnected": "DSP off",
+    "realtime": true
+},
+
+"tray": {
+    "icon-size": 14,
+    "spacing": 10
+},
+
+"upower": {
+    "show-icon": false,
+    "hide-if-empty": true,
+    "tooltip": true,
+    "tooltip-spacing": 20
+},
+
+  "custom/powerDraw": {
+    "format": "{}",
+    "interval": 1,
+    "exec": "~/.config/waybar/scripts/powerdraw.sh",
+    "return-type": "json"
+  }
+
 }
 
-// vi:ft=hjson
