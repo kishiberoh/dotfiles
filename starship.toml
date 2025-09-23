@@ -35,7 +35,7 @@ empty_symbol = "󰂎 "
 format = "[$symbol$percentage](pine) "
 
 [[battery.display]]
-threshold = 101
+threshold = 75
 
 [hostname]
 ssh_only = false
