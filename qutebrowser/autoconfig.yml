@@ -8,3 +8,11 @@ config_version: 2
 settings:
   auto_save.session:
     global: true
+  content.javascript.clipboard:
+    https://duckduckgo.com: access-paste
+  statusbar.show:
+    global: in-mode
+  tabs.position:
+    global: left
+  tabs.show:
+    global: switching

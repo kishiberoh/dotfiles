@@ -11,6 +11,7 @@ vim.opt.tabstop = 4
 vim.opt.smarttab = true
 vim.opt.shiftwidth = 4
 vim.opt.wrap = false
+vim.opt.linebreak = true
 vim.opt.swapfile = false
 vim.opt.signcolumn = "yes"
 vim.opt.winborder = "rounded"
@@ -43,11 +44,10 @@ vim.keymap.set("n", "<leader>ww", ":write<CR>", { desc = "Write" })
 vim.keymap.set("n", "<leader>wq", ":write<CR> :quit<CR>", { desc = "Write and quit" })
 vim.keymap.set("n", "<leader>qq", ":quit<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>qa", ":qall<CR>", { desc = "Quit all" })
--- vim.keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
--- vim.keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>qb", ":bd<CR>", { desc = "Quit buffer" })
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
 vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { silent = true })
-vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Write" })
+vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Open Mason" })
 vim.keymap.set("n", "<leader>rn", ":IncRename ", { desc = "Rename var" })
 vim.keymap.set("t", "<F2>", "<C-\\><C-n>", { noremap = true, silent = true })
 
@@ -253,6 +253,7 @@ require("lazy").setup({
 				table.insert(opts.sections.lualine_c, {
 					symbols.get,
 					cond = symbols.has,
+					tostring(vim.fn.wordcount().words) .. ' words',
 				})
 			end,
 			config = function()
@@ -341,11 +342,11 @@ require("lazy").setup({
 						python = { "isort", "black" },
 						latex = { "tex-fmt" },
 					},
-					format_on_save = {
+					--[[ format_on_save = {
 						lsp_fallback = true,
 						async = false,
 						timeout_ms = 500,
-					},
+					}, ]]
 				})
 
 				vim.keymap.set({ "n", "v" }, "<leader>mp", function()

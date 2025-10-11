@@ -100,8 +100,8 @@ general {
     allow_tearing = false
 
     # layout = dwindle
-    #layout = scroller
-    layout = master
+    layout = scroller
+    # layout = master
 }
 
 # https://wiki.hyprland.org/Configuring/Variables/#decoration
@@ -154,6 +154,17 @@ master {
     new_status = true
 }
 
+plugin:scroller {
+    column_widths = onesixth onefourth onethird threeeighths onehalf twothirds one
+    window_heights = onesixth onefourth onethird onehalf twothirds fivesixths one
+    focus_wrap = false
+    cyclesize_wrap = false
+    center_row_if_space_available = false
+    jump_labels_font = FiraCode Nerd Font
+    jump_labels_color = rgba(df99dfDD)
+    jump_labels_keys=asdfghjkl
+    jump_labels_scale=0.2
+}
 
 # https://wiki.hyprland.org/Configuring/Variables/#misc
 misc { 
@@ -234,16 +245,27 @@ bind = $mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-co
 # bind = $mainMod, R, exec, wlogout
 # bind = $mainMod, g, hyprexpo:expo, toggle
 
-bind = $mainMod CTRL, H, movewindow, left
-bind = $mainMod CTRL, L, movewindow, right
-bind = $mainMod CTRL, K, movewindow, up
-bind = $mainMod CTRL, J, movewindow, down
+bind = $mainMod, X, scroller:pin, 
+# bind = $mainMod, 
 
+bind = $mainMod CTRL, H, scroller:movewindow, left
+bind = $mainMod CTRL, L, scroller:movewindow, right
+bind = $mainMod CTRL, K, scroller:movewindow, up
+bind = $mainMod CTRL, J, scroller:movewindow, down
+
+bind = $mainMod, period, scroller:cyclesize, next  # Grow width
+bind = $mainMod, comma, scroller:cyclesize, prev  # Shrink width
 # bind = $mainMod, period, scroller:cyclewidth, next  # Grow width
 # bind = $mainMod, comma, scroller:cyclewidth, prev  # Shrink width
 
+bind = $mainMod, R, scroller:setmode, row  # Row Mode
+bind = $mainMod SHIFT, R, scroller:setmode, col  # Column Mode
+bind = $mainMod, Z, scroller:admitwindow,  # Add to column
+bind = $mainMod SHIFT, Z, scroller:expelwindow,  # Expel from column
 # overview keys
 # bind key to toggle overview (normal)
+bind = $mainMod, G, scroller:toggleoverview  # Expo View
+bind = $mainMod SHIFT, G, scroller:jump  # Expo View EasyMotion
 
 
 # Move focus with mainMod + arrow keys
