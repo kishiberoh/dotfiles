@@ -13,18 +13,8 @@ input {
             options "caps:swapescape"	    
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
         }
-
-        // You can set the keyboard repeat parameters. The defaults match wlroots and sway.
-        // Delay is in milliseconds before the repeat starts. Rate is in characters per second.
-        // repeat-delay 600
-        // repeat-rate 25
-
-        // Niri can remember the keyboard layout globally (the default) or per-window.
-        // - "global" - layout change is global for all windows.
-        // - "window" - layout is tracked for each window individually.
-        // track-layout "global"
     }
-    focus-follows-mouse max-scroll-amount="33%"
+
     // Next sections include libinput settings.
     // Omitting settings disables them, or leaves them at their default values.
     touchpad {
@@ -68,6 +58,10 @@ input {
     // Uncomment this if you would like to configure the power button elsewhere
     // (i.e. logind.conf).
     // disable-power-key-handling
+
+    // Focus windows and outputs automatically when moving the mouse into them.
+    // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
+    focus-follows-mouse //max-scroll-amount="0%"
 }
 
 // You can configure outputs by their name, which you can find
@@ -91,7 +85,7 @@ output "eDP-1" {
     // for the resolution.
     // If the mode is omitted altogether or is invalid, niri will pick one automatically.
     // Run `niri msg outputs` while inside a niri instance to list all outputs and their modes.
-    mode "1920x1080@60.030"
+    mode "1920x1080"
 
     // Position of the output in the global coordinate space.
     // This affects directional monitor actions like "focus-monitor-left", and cursor movement.
@@ -103,10 +97,6 @@ output "eDP-1" {
     // It the position is unset or results in an overlap, the output is instead placed
     // automatically.
     position x=250 y=1440
-}
-
-output "DP-1" {
-    position x=0 y=0
 }
 
 layout {
@@ -161,7 +151,7 @@ layout {
         // If you enable the border, you probably want to disable the focus ring.
         // off
 
-        width 2
+        width 4
         active-color "#ebbcba"
         inactive-color "#908caa"
 
@@ -258,10 +248,8 @@ layout {
 // Add lines like this to spawn processes at startup.
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
-spawn-at-startup "waybar"
-spawn-at-startup "swaync"
 spawn-at-startup "xwayland-satellite" ":1"
-spawn-at-startup "swayidle" "-w" "timeout" "601" "niri msg action power-off-monitors" "timeout" "600" "hyprlock"
+spawn-at-startup "swayidle" "-w" "timeout" "360" "niri msg action power-off-monitors" "timeout" "300" "hyprlock"
 
 // You can override environment variables for processes spawned by niri.
 environment {
@@ -276,7 +264,7 @@ cursor {
     // Change the theme and size of the cursor as well as set the
     // `XCURSOR_THEME` and `XCURSOR_SIZE` env variables.
     xcursor-theme "BreezeX-RosePineDawn-Linux"
-    xcursor-size 32
+    xcursor-size 20
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
@@ -349,7 +337,7 @@ animations {
     // including after the touchpad gesture.
     workspace-switch {
         // off
-        spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=500 epsilon=0.0001
     }
 
     // All horizontal camera view movement:
@@ -522,9 +510,6 @@ binds {
     XF86AudioRaiseVolume repeat=false { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05+"; }
     XF86AudioLowerVolume repeat=false { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"; }
     XF86AudioMute repeat=false { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    //XF86AudioRaiseVolume { spawn "swayosd-client" "--output-volume" "raise"; }
-    //XF86AudioLowerVolume { spawn "swayosd-client" "--output-volume" "lower" ; }
-    //XF86AudioMute { spawn "swayosd-client" "--output-volume" "mute-toggle" ; }
 
     XF86AudioNext repeat=false { spawn "playerctl" "next"; }
     XF86AudioPrev repeat=false { spawn "playerctl" "previous"; }
@@ -533,8 +518,6 @@ binds {
     
     XF86MonBrightnessUp repeat=false { spawn "brightnessctl" "set" "+5%"; }
     XF86MonBrightnessDown repeat=false { spawn "brightnessctl" "set" "5%-"; }
-    //XF86MonBrightnessUp { spawn "swayosd-client" "--brightness" "+10"; }
-    //XF86MonBrightnessDown { spawn "swayosd-client" "--brightness" "-10"; }
 
     Mod+O { toggle-overview; }
 
@@ -545,8 +528,8 @@ binds {
     Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
     Mod+H     { focus-column-left; }
-    Mod+J     { focus-window-down; }
-    Mod+K     { focus-window-up; }
+    // Mod+J     { focus-window-down; }
+    // Mod+K     { focus-window-up; }
     Mod+L     { focus-column-right; }
     Mod+W { toggle-column-tabbed-display; }
 
@@ -555,16 +538,16 @@ binds {
     Mod+Ctrl+Up    { move-window-up; }
     Mod+Ctrl+Right { move-column-right; }
     Mod+Ctrl+H     { move-column-left; }
-    Mod+Ctrl+J     { move-window-down; }
-    Mod+Ctrl+K     { move-window-up; }
+    // Mod+Ctrl+J     { move-window-down; }
+    // Mod+Ctrl+K     { move-window-up; }
     Mod+Ctrl+L     { move-column-right; }
 
     // Alternative commands that move across workspaces when reaching
     // the first or last window in a column.
-    // Mod+J     { focus-window-or-workspace-down; }
-    // Mod+K     { focus-window-or-workspace-up; }
-    // Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
-    // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+    Mod+J     { focus-window-or-workspace-down; }
+    Mod+K     { focus-window-or-workspace-up; }
+    Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
+    Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
 
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }
